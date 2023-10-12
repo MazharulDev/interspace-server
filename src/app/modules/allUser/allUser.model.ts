@@ -1,34 +1,31 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from "mongoose";
-import { IUser, UserModel } from "./user.interface";
+import { IUser, UserModel } from "./allUser.interface";
 import bcrypt from "bcrypt";
 import config from "../../../config";
 
-export const UserSchema = new Schema<IUser, UserModel>(
+const AllUsersSchema = new Schema<IUser, Record<string, never>>(
   {
-    name: {
-      type: String,
-      required: true,
-    },
     email: {
       type: String,
-      unique: true,
       required: true,
     },
     role: {
       type: String,
       required: true,
-      default: "user",
-    },
-    phoneNumber: {
-      type: String,
     },
     password: {
       type: String,
       required: true,
+      select: 0,
     },
-
-    image: {
-      type: String,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    admin: {
+      type: Schema.Types.ObjectId,
+      ref: "Admin",
     },
   },
   {
@@ -39,23 +36,20 @@ export const UserSchema = new Schema<IUser, UserModel>(
   }
 );
 
-UserSchema.statics.isUserExist = async function (
+AllUsersSchema.statics.isUserExist = async function (
   email: string
 ): Promise<Pick<IUser, "email" | "password" | "role"> | null> {
-  return await User.findOne(
-    { email },
-    { id: 1, password: 1, role: 1, needsPasswordChange: 1 }
-  );
+  return await AllUsers.findOne({ email }, { email: 1, password: 1, role: 1 });
 };
 
-UserSchema.statics.isPasswordMatched = async function (
+AllUsersSchema.statics.isPasswordMatched = async function (
   givenPassword: string,
   savedPassword: string
 ): Promise<boolean> {
   return await bcrypt.compare(givenPassword, savedPassword);
 };
 
-UserSchema.pre("save", async function (next) {
+AllUsersSchema.pre("save", async function (next) {
   const user = this;
   user.password = await bcrypt.hash(
     this.password,
@@ -64,4 +58,4 @@ UserSchema.pre("save", async function (next) {
   next();
 });
 
-export const User = model<IUser, UserModel>("User", UserSchema);
+export const AllUsers = model<IUser, UserModel>("AllUsers", AllUsersSchema);

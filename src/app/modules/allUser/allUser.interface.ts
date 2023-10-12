@@ -1,17 +1,21 @@
 /* eslint-disable no-unused-vars */
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
+import { IUsers } from "../user/users.interface";
+import { IAdmin } from "../admin/admin.interface";
 
 export type IUser = {
-  name: string;
+  _id: string;
   email: string;
-  image?: string;
   role: string;
-  phoneNumber: string;
   password: string;
+  user?: Types.ObjectId | IUsers;
+  admin?: Types.ObjectId | IAdmin;
 };
 
 export type UserModel = {
-  isUserExist(id: string): Promise<Pick<IUser, "email" | "password" | "role">>;
+  isUserExist(
+    email: string
+  ): Promise<Pick<IUser, "email" | "password" | "role">>;
   isPasswordMatched(
     givenPassword: string,
     savedPassword: string

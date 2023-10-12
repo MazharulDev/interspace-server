@@ -1,24 +1,24 @@
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
-import { User } from "../user/user.model";
 import { ILoginUser, ILoginUserResponse } from "./auth.interface";
 import { Secret } from "jsonwebtoken";
 import config from "../../../config";
 import { jwtHelpers } from "../../../helpers/jwtHelpers";
+import { AllUsers } from "../allUser/allUser.model";
 
 const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   const { email, password } = payload;
 
   // const user = new User()
 
-  const isUserExist = await User.isUserExist(email);
+  const isUserExist = await AllUsers.isUserExist(email);
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, "User does not exist");
   }
 
   if (
     isUserExist.password &&
-    !(await User.isPasswordMatched(password, isUserExist.password))
+    !(await AllUsers.isPasswordMatched(password, isUserExist.password))
   ) {
     throw new ApiError(httpStatus.UNAUTHORIZED, "Password is incorrect");
   }
