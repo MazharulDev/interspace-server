@@ -6,6 +6,7 @@ import httpStatus from "http-status";
 const app: Application = express();
 import cookieParser from "cookie-parser";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
+import routers from "./app/routes";
 
 app.use(cors());
 app.use(cookieParser());
@@ -15,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //aplication main route
-// app.use("/api/v1/", routers);
+app.use("/api/v1/", routers);
 
 // tesing route
 app.get("/", (req: Request, res: Response) => {
