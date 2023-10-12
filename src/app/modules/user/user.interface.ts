@@ -1,17 +1,22 @@
 /* eslint-disable no-unused-vars */
-import { Model, Types } from "mongoose";
+import { Model } from "mongoose";
 
 export type IUser = {
-  name: string; //embedded object
+  name: string;
   email: string;
   image?: string;
   role: string;
   phoneNumber: string;
+  password: string;
 };
-export type UserModel = Model<IUser, Record<string, unknown>>;
 
-// export type UserModel = Model<IUser, Record<string, unknown>>;
-// export type UserModel = Model<IUser, Record<string, unknown>, IUserMethods>;
+export type UserModel = {
+  isUserExist(id: string): Promise<Pick<IUser, "email" | "password" | "role">>;
+  isPasswordMatched(
+    givenPassword: string,
+    savedPassword: string
+  ): Promise<boolean>;
+} & Model<IUser>;
 
 export type IUserFilters = {
   searchTerm?: string;
