@@ -24,10 +24,10 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateUser = catchAsync(async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { email } = req.params;
   const { ...userData } = req.body;
 
-  const result = await UserService.updateUser(id, userData);
+  const result = await UserService.updateUser(email, userData);
 
   sendResponse<IUser>(res, {
     statusCode: httpStatus.OK,

@@ -60,6 +60,17 @@ const getAllAdmins = async (
   };
 };
 
+const updateAdmin = async (
+  email: string,
+  payload: IAdmin
+): Promise<IAdmin | null> => {
+  const result = await Admin.findOneAndUpdate({ email: email }, payload, {
+    new: true,
+  });
+  return result;
+};
+
 export const AdminService = {
   getAllAdmins,
+  updateAdmin,
 };

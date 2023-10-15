@@ -23,6 +23,21 @@ const getAllAdmins = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateAdmin = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const { ...adminData } = req.body;
+
+  const result = await AdminService.updateAdmin(email, adminData);
+
+  sendResponse<IAdmin>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Admin updated successfully",
+    data: result,
+  });
+});
+
 export const AdminController = {
   getAllAdmins,
+  updateAdmin,
 };

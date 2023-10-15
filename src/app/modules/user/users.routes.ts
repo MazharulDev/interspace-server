@@ -7,6 +7,6 @@ router.get(
 
   UserController.getAllUsers
 );
-router.patch("/:id", UserController.updateUser);
+router.patch("/:email", UserController.updateUser);
 
 export const UsersRoutes = router;

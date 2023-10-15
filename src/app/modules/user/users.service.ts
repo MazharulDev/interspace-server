@@ -62,10 +62,10 @@ const getAllUsers = async (
 };
 
 const updateUser = async (
-  id: string,
+  email: string,
   payload: Partial<IUser>
 ): Promise<IUser | null> => {
-  const result = await Users.findByIdAndUpdate(id, payload, {
+  const result = await Users.findOneAndUpdate({ email: email }, payload, {
     new: true,
   });
   return result;
