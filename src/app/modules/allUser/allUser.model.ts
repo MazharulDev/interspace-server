@@ -8,6 +8,7 @@ const AllUsersSchema = new Schema<IUser, Record<string, never>>(
   {
     email: {
       type: String,
+      unique: true,
       required: true,
     },
     role: {

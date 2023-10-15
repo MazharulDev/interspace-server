@@ -7,5 +7,6 @@ router.get(
 
   UserController.getAllUsers
 );
+router.patch("/:id", UserController.updateUser);
 
 export const UsersRoutes = router;

@@ -23,14 +23,22 @@ const createAdmin = async (admin: IAdmin): Promise<IUser | null> => {
     email: adminAdded.email,
     password: admin.password,
     role: adminAdded.role,
-    user: adminAdded._id,
+    admin: adminAdded._id,
   };
   const result = await AllUsers.create(adminInfo);
 
   return result;
 };
 
+const getSingleUser = async (email: string): Promise<IUser | null> => {
+  const result = await AllUsers.findOne({ email: email })
+    .populate("user")
+    .populate("admin");
+  return result;
+};
+
 export const UserService = {
   createUser,
   createAdmin,
+  getSingleUser,
 };

@@ -5,6 +5,7 @@ import { IPaginationOptions } from "../../../interfaces/pagination";
 import { userSearchableFields } from "./users.constant";
 import { Users } from "./users.model";
 import { IUserFilters, IUsers } from "./users.interface";
+import { IUser } from "../allUser/allUser.interface";
 
 const getAllUsers = async (
   filters: IUserFilters,
@@ -60,6 +61,17 @@ const getAllUsers = async (
   };
 };
 
+const updateUser = async (
+  id: string,
+  payload: Partial<IUser>
+): Promise<IUser | null> => {
+  const result = await Users.findByIdAndUpdate(id, payload, {
+    new: true,
+  });
+  return result;
+};
+
 export const UserService = {
   getAllUsers,
+  updateUser,
 };

@@ -18,5 +18,6 @@ router.post(
   validateRequest(UserValidation.createUserZodSchema),
   UserController.createAdmin
 );
+router.get("/:email", UserController.getSingleUser);
 
-export const UserRoutes = router;
+export const AllUserRoutes = router;

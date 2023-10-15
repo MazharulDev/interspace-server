@@ -26,7 +26,19 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getSingleUser = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const result = await UserService.getSingleUser(email);
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Get single user",
+    data: result,
+  });
+});
+
 export const UserController = {
   createUser,
   createAdmin,
+  getSingleUser,
 };
