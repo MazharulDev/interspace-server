@@ -37,8 +37,16 @@ const getSingleUser = async (email: string): Promise<IUser | null> => {
   return result;
 };
 
+const updateAllUser = async (email: string, payload: any) => {
+  const result = await AllUsers.findOneAndUpdate({ email: email }, payload, {
+    new: true,
+  });
+  return result;
+};
+
 export const UserService = {
   createUser,
   createAdmin,
   getSingleUser,
+  updateAllUser,
 };

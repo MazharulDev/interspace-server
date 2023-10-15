@@ -11,6 +11,8 @@ const AllUsersSchema = new Schema<IUser, Record<string, never>>(
       unique: true,
       required: true,
     },
+    name: { type: String },
+    phoneNumber: { type: String },
     role: {
       type: String,
       required: true,

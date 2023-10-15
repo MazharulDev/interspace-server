@@ -19,5 +19,10 @@ router.post(
   UserController.createAdmin
 );
 router.get("/:email", UserController.getSingleUser);
+router.patch(
+  "/:email",
+  auth(ENUM_USER_ROLE.SUPER_ADMIN),
+  UserController.updateAllUser
+);
 
 export const AllUserRoutes = router;

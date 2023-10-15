@@ -6,6 +6,8 @@ import { IAdmin } from "../admin/admin.interface";
 export type IUser = {
   _id: string;
   email: string;
+  name?: string;
+  phoneNumber?: string;
   role: string;
   password: string;
   user?: Types.ObjectId | IUsers;

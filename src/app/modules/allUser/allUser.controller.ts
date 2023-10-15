@@ -37,8 +37,21 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateAllUser = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const { ...AllUserData } = req.body;
+  const result = await UserService.updateAllUser(email, AllUserData);
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "updated super admin",
+    data: result,
+  });
+});
+
 export const UserController = {
   createUser,
   createAdmin,
   getSingleUser,
+  updateAllUser,
 };
