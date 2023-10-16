@@ -9,6 +9,7 @@ router.get(
 
   UserController.getAllUsers
 );
+router.get("/:id", UserController.userById);
 router.patch("/update/:id", UserController.updateById);
 router.patch("/:email", UserController.updateUser);
 router.delete(

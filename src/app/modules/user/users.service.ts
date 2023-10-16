@@ -88,9 +88,15 @@ const deleteUser = async (id: string): Promise<IUser | null> => {
   return result;
 };
 
+const userById = async (id: string): Promise<IUser | null> => {
+  const result = await Users.findById(id);
+  return result;
+};
+
 export const UserService = {
   getAllUsers,
   updateUser,
   updateById,
   deleteUser,
+  userById,
 };
