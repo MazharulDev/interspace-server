@@ -5,6 +5,8 @@ import { IPaginationOptions } from "../../../interfaces/pagination";
 import { userSearchableFields } from "../user/users.constant";
 import { IAdmin, IAdminFilters } from "./admin.interface";
 import { Admin } from "./admin.model";
+import { AllUsers } from "../allUser/allUser.model";
+import { IUser } from "../allUser/allUser.interface";
 
 const getAllAdmins = async (
   filters: IAdminFilters,
@@ -70,8 +72,24 @@ const updateAdmin = async (
   return result;
 };
 
-const deleteAdmin = async (id: string): Promise<IAdmin | null> => {
-  const result = await Admin.findByIdAndDelete(id);
+const deleteAdmin = async (id: string): Promise<IUser | null> => {
+  const result = await AllUsers.findOneAndDelete({ admin: id });
+  if (result?._id) {
+    await Admin.findByIdAndDelete(id);
+  }
+  return result;
+};
+
+const updateById = async (
+  id: string,
+  payload: IAdmin
+): Promise<IAdmin | null> => {
+  const result = await Admin.findByIdAndUpdate(id, payload, { new: true });
+  return result;
+};
+
+const singleAdminById = async (id: string): Promise<IAdmin | null> => {
+  const result = await Admin.findById(id);
   return result;
 };
 
@@ -79,4 +97,6 @@ export const AdminService = {
   getAllAdmins,
   updateAdmin,
   deleteAdmin,
+  updateById,
+  singleAdminById,
 };

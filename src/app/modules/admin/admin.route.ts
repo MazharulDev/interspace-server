@@ -5,6 +5,16 @@ import { ENUM_USER_ROLE } from "../../../enums/user";
 const router = express.Router();
 
 router.get("/", auth(ENUM_USER_ROLE.SUPER_ADMIN), AdminController.getAllAdmins);
+router.get(
+  "/:id",
+  auth(ENUM_USER_ROLE.SUPER_ADMIN),
+  AdminController.singleAdminById
+);
+router.patch(
+  "/update/:id",
+  auth(ENUM_USER_ROLE.SUPER_ADMIN),
+  AdminController.updateById
+);
 router.patch(
   "/:email",
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
