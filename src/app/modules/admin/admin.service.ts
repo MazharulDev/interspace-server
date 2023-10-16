@@ -70,7 +70,13 @@ const updateAdmin = async (
   return result;
 };
 
+const deleteAdmin = async (id: string): Promise<IAdmin | null> => {
+  const result = await Admin.findByIdAndDelete(id);
+  return result;
+};
+
 export const AdminService = {
   getAllAdmins,
   updateAdmin,
+  deleteAdmin,
 };
