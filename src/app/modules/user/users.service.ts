@@ -6,6 +6,7 @@ import { userSearchableFields } from "./users.constant";
 import { Users } from "./users.model";
 import { IUserFilters, IUsers } from "./users.interface";
 import { IUser } from "../allUser/allUser.interface";
+import { AllUsers } from "../allUser/allUser.model";
 
 const getAllUsers = async (
   filters: IUserFilters,
@@ -71,7 +72,25 @@ const updateUser = async (
   return result;
 };
 
+const updateById = async (
+  id: string,
+  payload: IUser
+): Promise<IUser | null> => {
+  const result = await Users.findByIdAndUpdate(id, payload, { new: true });
+  return result;
+};
+
+const deleteUser = async (id: string): Promise<IUser | null> => {
+  const result = await AllUsers.findOneAndDelete({ user: id });
+  if (result?._id) {
+    await Users.findByIdAndDelete(id);
+  }
+  return result;
+};
+
 export const UserService = {
   getAllUsers,
   updateUser,
+  updateById,
+  deleteUser,
 };
