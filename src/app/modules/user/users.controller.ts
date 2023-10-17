@@ -43,7 +43,7 @@ const updateById = catchAsync(async (req: Request, res: Response) => {
 
   const result = await UserService.updateById(id, userData);
 
-  sendResponse<IUser>(res, {
+  sendResponse<IUser | undefined>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "User update successfully",

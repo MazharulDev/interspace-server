@@ -3,6 +3,7 @@ import { AllUserRoutes } from "../modules/allUser/allUser.route";
 import { AuthRoutes } from "../modules/auth/auth.route";
 import { UsersRoutes } from "../modules/user/users.routes";
 import { AdminRoutes } from "../modules/admin/admin.route";
+import { ServiceRoutes } from "../modules/service/service.route";
 
 const router = express.Router();
 
@@ -22,6 +23,10 @@ const modulesRoutes = [
   {
     path: "/auth",
     route: AuthRoutes,
+  },
+  {
+    path: "/service",
+    route: ServiceRoutes,
   },
 ];
 modulesRoutes.forEach((route) => router.use(route.path, route.route));
