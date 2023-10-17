@@ -57,7 +57,7 @@ const updateById = catchAsync(async (req: Request, res: Response) => {
 
   const result = await AdminService.updateById(id, adminData);
 
-  sendResponse<IUser>(res, {
+  sendResponse<IUser | IAdmin | undefined>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Admin Updated successfully",

@@ -7,6 +7,7 @@ import { IAdmin, IAdminFilters } from "./admin.interface";
 import { Admin } from "./admin.model";
 import { AllUsers } from "../allUser/allUser.model";
 import { IUser } from "../allUser/allUser.interface";
+import { Users } from "../user/users.model";
 
 const getAllAdmins = async (
   filters: IAdminFilters,
@@ -83,8 +84,25 @@ const deleteAdmin = async (id: string): Promise<IUser | null> => {
 const updateById = async (
   id: string,
   payload: IAdmin
-): Promise<IAdmin | null> => {
-  const result = await Admin.findByIdAndUpdate(id, payload, { new: true });
+): Promise<IAdmin | null | undefined | IUser> => {
+  let result;
+  if (payload.role === "admin") {
+    result = await Admin.findByIdAndUpdate(id, payload, { new: true });
+    return result;
+  } else if (payload.role === "user") {
+    await AllUsers.findOneAndUpdate({ admin: id }, { role: payload.role });
+    const insertData = {
+      name: payload.name,
+      email: payload.email,
+      role: payload.role,
+      phoneNumber: payload.phoneNumber,
+    };
+    const result = await Users.create(insertData);
+
+    await Admin.findByIdAndDelete(id);
+    return result;
+  }
+
   return result;
 };
 
