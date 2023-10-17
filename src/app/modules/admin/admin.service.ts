@@ -90,7 +90,6 @@ const updateById = async (
     result = await Admin.findByIdAndUpdate(id, payload, { new: true });
     return result;
   } else if (payload.role === "user") {
-    await AllUsers.findOneAndUpdate({ admin: id }, { role: payload.role });
     const insertData = {
       name: payload.name,
       email: payload.email,
@@ -98,7 +97,10 @@ const updateById = async (
       phoneNumber: payload.phoneNumber,
     };
     const result = await Users.create(insertData);
-
+    await AllUsers.findOneAndUpdate(
+      { admin: id },
+      { role: payload.role, user: result._id }
+    );
     await Admin.findByIdAndDelete(id);
     return result;
   }
