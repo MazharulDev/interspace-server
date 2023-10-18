@@ -11,7 +11,16 @@ export const BookingSchema = new Schema<IBooking>(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      required: true,
+      default: "pending",
+    },
     phoneNumber: {
+      type: String,
+      required: true,
+    },
+    packageName: {
       type: String,
       required: true,
     },
