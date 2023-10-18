@@ -9,11 +9,15 @@ import { bookingSearchableFields } from "./booking.constant";
 import { SortOrder } from "mongoose";
 
 const createService = async (bookInfo: IBooking): Promise<IBooking | null> => {
-  const existBooking = await Booking.findOne({ email: bookInfo.email });
-  if (existBooking) {
+  const packageFind = await Booking.find({
+    packageName: bookInfo.packageName,
+  });
+  const exist = packageFind.some((pack) => pack.email === bookInfo.email);
+
+  if (exist) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      "You already booked our connection"
+      "You already booked this connection"
     );
   }
   const result = await Booking.create(bookInfo);
@@ -74,6 +78,11 @@ const getAllBooking = async (
   };
 };
 
+const getBookingByEmail = async (email: string): Promise<IBooking[] | null> => {
+  const result = await Booking.find({ email: email });
+  return result;
+};
+
 const deleteBooking = async (id: string): Promise<IBooking | null> => {
   const result = await Booking.findByIdAndDelete(id);
   return result;
@@ -94,4 +103,5 @@ export const BookingService = {
   getAllBooking,
   deleteBooking,
   updateBookingStatus,
+  getBookingByEmail,
 };

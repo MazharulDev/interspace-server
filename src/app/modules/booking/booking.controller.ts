@@ -34,6 +34,19 @@ const getAllBooking = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getBookingByEmail = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
+
+  const result = await BookingService.getBookingByEmail(email);
+
+  sendResponse<IBooking[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Bookings retrieved successfully",
+    data: result,
+  });
+});
+
 const deleteBooking = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await BookingService.deleteBooking(id);
@@ -64,4 +77,5 @@ export const BookingController = {
   getAllBooking,
   deleteBooking,
   updateBookingStatus,
+  getBookingByEmail,
 };

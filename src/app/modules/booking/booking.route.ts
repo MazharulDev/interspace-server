@@ -10,6 +10,11 @@ router.get(
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
   BookingController.getAllBooking
 );
+router.get(
+  "/:email",
+  auth(ENUM_USER_ROLE.USER),
+  BookingController.getBookingByEmail
+);
 router.delete(
   "/:id",
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
