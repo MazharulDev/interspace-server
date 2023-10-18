@@ -65,7 +65,28 @@ const getAllService = async (
   };
 };
 
+const getSingleService = async (id: string): Promise<IService | null> => {
+  const result = await Service.findById(id);
+  return result;
+};
+
+const updateService = async (
+  id: string,
+  payload: IService
+): Promise<IService | null> => {
+  const result = await Service.findByIdAndUpdate(id, payload, { new: true });
+  return result;
+};
+
+const deleteService = async (id: string): Promise<IService | null> => {
+  const result = await Service.findByIdAndDelete(id);
+  return result;
+};
+
 export const ServiceService = {
   createService,
   getAllService,
+  getSingleService,
+  deleteService,
+  updateService,
 };
