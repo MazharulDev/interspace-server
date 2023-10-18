@@ -79,8 +79,19 @@ const deleteBooking = async (id: string): Promise<IBooking | null> => {
   return result;
 };
 
+const updateBookingStatus = async (
+  id: string,
+  payload: Partial<IBooking>
+): Promise<IBooking | null> => {
+  const result = await Booking.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return result;
+};
+
 export const BookingService = {
   createService,
   getAllBooking,
   deleteBooking,
+  updateBookingStatus,
 };
