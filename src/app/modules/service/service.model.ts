@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { IService } from "./service.interface";
 
 export const ServiceSchema = new Schema<IService>(
@@ -16,6 +16,12 @@ export const ServiceSchema = new Schema<IService>(
       type: String,
       required: true,
     },
+    reviews: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
   },
   {
     timestamps: true,

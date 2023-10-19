@@ -66,7 +66,15 @@ const getAllService = async (
 };
 
 const getSingleService = async (id: string): Promise<IService | null> => {
-  const result = await Service.findById(id);
+  const result = await Service.findById(id)
+    .populate("reviews")
+    .populate({
+      path: "reviews",
+      populate: {
+        path: "author",
+        model: "User",
+      },
+    });
   return result;
 };
 

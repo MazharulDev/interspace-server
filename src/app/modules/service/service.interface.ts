@@ -3,6 +3,7 @@ export type IService = {
   title: string;
   price: string;
   speed: string;
+  reviews?: any;
 };
 
 export type IServiceFilters = {
