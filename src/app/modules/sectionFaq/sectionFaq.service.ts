@@ -2,21 +2,21 @@ import { SortOrder } from "mongoose";
 import { paginationHelpers } from "../../../helpers/paginationHelpers";
 import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
-import { userReviewSearchableFields } from "./userReview.constant";
-import { IUserReview, IUserReviewFilters } from "./userReview.interface";
-import { UserReview } from "./userReview.model";
+import { sectionFaqSearchableFields } from "./sectionFaq.constant";
+import { ISectionFaq, ISectionFaqFilters } from "./sectionFaq.interface";
+import { SectionFaq } from "./sectionFaq.model";
 
-const createUserReview = async (
-  userReview: IUserReview
-): Promise<IUserReview | null> => {
-  const result = await UserReview.create(userReview);
+const createService = async (
+  faqInfo: ISectionFaq
+): Promise<ISectionFaq | null> => {
+  const result = await SectionFaq.create(faqInfo);
   return result;
 };
 
-const getAllUserReview = async (
-  filters: IUserReviewFilters,
+const getAllFaq = async (
+  filters: ISectionFaqFilters,
   paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<IUserReview[]>> => {
+): Promise<IGenericResponse<ISectionFaq[]>> => {
   const { searchTerm, ...filtersData } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
@@ -25,7 +25,7 @@ const getAllUserReview = async (
 
   if (searchTerm) {
     andConditions.push({
-      $or: userReviewSearchableFields.map((field) => ({
+      $or: sectionFaqSearchableFields.map((field) => ({
         [field]: {
           $regex: searchTerm,
           $options: "i",
@@ -50,12 +50,12 @@ const getAllUserReview = async (
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
 
-  const result = await UserReview.find(whereConditions)
+  const result = await SectionFaq.find(whereConditions)
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);
 
-  const total = await UserReview.countDocuments(whereConditions);
+  const total = await SectionFaq.countDocuments(whereConditions);
 
   return {
     meta: {
@@ -67,26 +67,7 @@ const getAllUserReview = async (
   };
 };
 
-const getPublishReview = async () => {
-  const result = await UserReview.find({ status: "publish" }).sort(
-    "-updatedAt"
-  );
-  return result;
-};
-
-const updateReview = async (id: string, payload: IUserReview) => {
-  const result = await UserReview.findByIdAndUpdate(id, payload, { new: true });
-  return result;
-};
-const getById = async (id: string) => {
-  const result = await UserReview.findById(id);
-  return result;
-};
-
-export const UserReviewService = {
-  createUserReview,
-  getAllUserReview,
-  getPublishReview,
-  updateReview,
-  getById,
+export const SectionFaqService = {
+  createService,
+  getAllFaq,
 };
