@@ -29,8 +29,45 @@ const getAllFaq = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const deleteFaq = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await SectionFaqService.deleteFaq(id);
+
+  sendResponse<ISectionFaq>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Faq deleted successfully",
+    data: result,
+  });
+});
+const faqById = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await SectionFaqService.faqByid(id);
+
+  sendResponse<ISectionFaq>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Faq retrived successfully",
+    data: result,
+  });
+});
+const updateById = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { ...faqData } = req.body;
+  const result = await SectionFaqService.updateByid(id, faqData);
+
+  sendResponse<ISectionFaq>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Faq update successfully",
+    data: result,
+  });
+});
 
 export const SectionFaqController = {
   createSectionFaq,
   getAllFaq,
+  deleteFaq,
+  faqById,
+  updateById,
 };
