@@ -20,17 +20,13 @@ const createSectionFaq = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllFaq = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, sectionFaqFilterableFields);
-  const paginationOptions = pick(req.query, paginationFields);
-
-  const result = await SectionFaqService.getAllFaq(filters, paginationOptions);
+  const result = await SectionFaqService.getAllFaq();
 
   sendResponse<ISectionFaq[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Section faq retrieved successfully",
-    meta: result.meta,
-    data: result.data,
+    data: result,
   });
 });
 

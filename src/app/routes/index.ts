@@ -45,7 +45,7 @@ const modulesRoutes = [
     route: UserReviewRoutes,
   },
   {
-    path: "/faq-section",
+    path: "/section-faq",
     route: SectionFaqRoutes,
   },
 ];

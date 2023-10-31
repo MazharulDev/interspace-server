@@ -9,6 +9,6 @@ router.post(
   auth(ENUM_USER_ROLE.ADMIN),
   SectionFaqController.createSectionFaq
 );
-router.get("/", auth(ENUM_USER_ROLE.ADMIN), SectionFaqController.getAllFaq);
+router.get("/", SectionFaqController.getAllFaq);
 
 export const SectionFaqRoutes = router;
