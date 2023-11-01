@@ -13,4 +13,9 @@ export default {
     expires_in: process.env.JWT_EXPIRES_IN,
     refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
   },
+  ssl: {
+    store_id: process.env.SSL_STORE_ID,
+    store_pass: process.env.SSL_STORE_PASS,
+    sslPaymentUrl: process.env.BASE_PAYMENT_URL,
+  },
 };
