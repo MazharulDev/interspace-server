@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { IBooking } from "./booking.interface";
 
 export const BookingSchema = new Schema<IBooking>(
@@ -28,6 +28,12 @@ export const BookingSchema = new Schema<IBooking>(
       type: String,
       required: true,
     },
+    paymentData: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Payment",
+      },
+    ],
   },
   {
     timestamps: true,

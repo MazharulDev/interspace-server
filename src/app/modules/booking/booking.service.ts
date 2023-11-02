@@ -98,10 +98,16 @@ const updateBookingStatus = async (
   return result;
 };
 
+const bookingByEmail = async (email: string) => {
+  const result = await Booking.findOne({ email: email });
+  return result;
+};
+
 export const BookingService = {
   createService,
   getAllBooking,
   deleteBooking,
   updateBookingStatus,
   getBookingByEmail,
+  bookingByEmail,
 };

@@ -19,6 +19,32 @@ const initPayment = async (data: any) => {
   return paymentSession.redirectGatewayURL;
 };
 
+const webHook = async (payload: any) => {
+  if (!payload || !payload?.status || payload?.status !== "VALID") {
+    return {
+      massage: "Invalid Payment!",
+    };
+  }
+  const result = await sslService.validate(payload);
+  console.log(result);
+  if (result?.status !== "VALID") {
+    return {
+      massage: "Payment failed",
+    };
+  }
+
+  const { tran_id } = result;
+  console.log(tran_id);
+  await Payment.updateOne(
+    { transactionId: tran_id },
+    { $set: { status: "success" } }
+  );
+  return {
+    message:"Payment success"
+  }
+};
+
 export const PaymentService = {
   initPayment,
+  webHook,
 };

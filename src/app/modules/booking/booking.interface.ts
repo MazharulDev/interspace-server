@@ -5,6 +5,7 @@ export type IBooking = {
   phoneNumber: string;
   address: string;
   packageName: string;
+  paymentData?: any;
 };
 
 export type IBookingFilters = {

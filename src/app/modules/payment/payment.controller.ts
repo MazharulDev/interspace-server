@@ -12,7 +12,17 @@ const initPayment = async (req: Request, res: Response, next: NextFunction) => {
     data: result,
   });
 };
+const webHook = async (req: Request, res: Response, next: NextFunction) => {
+  const result = await PaymentService.webHook(req.query);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "payment verified successfully",
+    data: result,
+  });
+};
 
 export const PaymentController = {
   initPayment,
+  webHook,
 };

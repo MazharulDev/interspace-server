@@ -10,8 +10,8 @@ const initPayment = async (payload: any) => {
       store_passwd: config.ssl.store_pass,
       total_amount: payload.total_amount,
       currency: "BDT",
-      tran_id: payload.tran_id, // use unique tran_id for each api call
-      success_url: "http://localhost:3030/success",
+      tran_id: payload.tran_id,
+      success_url: "https://www.facebook.com",
       fail_url: "http://localhost:3030/fail",
       cancel_url: "http://localhost:3030/cancel",
       ipn_url: "http://localhost:3030/ipn",
@@ -49,6 +49,20 @@ const initPayment = async (payload: any) => {
   }
 };
 
+const validate = async (data: any) => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: `${config.ssl.sslValidationUrl}?val_id=${data.val_id}&store_id=${config.ssl.store_id}&store_passwd=${config.ssl.store_pass}&format=json`,
+    });
+    console.log(response);
+    return response.data;
+  } catch (err) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Payment error");
+  }
+};
+
 export const sslService = {
   initPayment,
+  validate,
 };
