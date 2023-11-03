@@ -15,11 +15,7 @@ router.get(
   auth(ENUM_USER_ROLE.USER),
   BookingController.bookingByEmail
 );
-router.get(
-  "/:email",
-  auth(ENUM_USER_ROLE.USER),
-  BookingController.getBookingByEmail
-);
+router.get("/", auth(ENUM_USER_ROLE.USER), BookingController.getBookingByEmail);
 
 router.delete(
   "/:id",

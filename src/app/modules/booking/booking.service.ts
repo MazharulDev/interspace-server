@@ -9,10 +9,10 @@ import { bookingSearchableFields } from "./booking.constant";
 import { SortOrder } from "mongoose";
 
 const createService = async (bookInfo: IBooking): Promise<IBooking | null> => {
-  const packageFind = await Booking.find({
-    packageName: bookInfo.packageName,
+  const exist = await Booking.findOne({
+    email: bookInfo.email,
   });
-  const exist = packageFind.some((pack) => pack.email === bookInfo.email);
+  // const exist = bookingEmail.some((pack) => pack.email === bookInfo.email);
 
   if (exist) {
     throw new ApiError(
@@ -78,8 +78,11 @@ const getAllBooking = async (
   };
 };
 
-const getBookingByEmail = async (email: string): Promise<IBooking[] | null> => {
-  const result = await Booking.find({ email: email });
+const getBookingByEmail = async (
+  email: any,
+  packageName: any
+): Promise<IBooking[] | null> => {
+  const result = await Booking.find({ email: email, packageName: packageName });
   return result;
 };
 

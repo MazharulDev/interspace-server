@@ -13,6 +13,7 @@ const booking_route_1 = require("../modules/booking/booking.route");
 const review_route_1 = require("../modules/review/review.route");
 const userReview_route_1 = require("../modules/userReview/userReview.route");
 const sectionFaq_route_1 = require("../modules/sectionFaq/sectionFaq.route");
+const payment_route_1 = require("../modules/payment/payment.route");
 const router = express_1.default.Router();
 const modulesRoutes = [
     {
@@ -48,8 +49,12 @@ const modulesRoutes = [
         route: userReview_route_1.UserReviewRoutes,
     },
     {
-        path: "/faq-section",
+        path: "/section-faq",
         route: sectionFaq_route_1.SectionFaqRoutes,
+    },
+    {
+        path: "/payment",
+        route: payment_route_1.PaymentRoutes,
     },
 ];
 modulesRoutes.forEach((route) => router.use(route.path, route.route));

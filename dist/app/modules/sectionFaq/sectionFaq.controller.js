@@ -28,9 +28,6 @@ const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const sectionFaq_service_1 = require("./sectionFaq.service");
 const http_status_1 = __importDefault(require("http-status"));
-const pick_1 = __importDefault(require("../../../shared/pick"));
-const sectionFaq_constant_1 = require("./sectionFaq.constant");
-const pagination_1 = require("../../../constants/pagination");
 const createSectionFaq = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const sectionFaqData = __rest(req.body, []);
     const result = yield sectionFaq_service_1.SectionFaqService.createService(sectionFaqData);
@@ -42,18 +39,49 @@ const createSectionFaq = (0, catchAsync_1.default)((req, res) => __awaiter(void 
     });
 }));
 const getAllFaq = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const filters = (0, pick_1.default)(req.query, sectionFaq_constant_1.sectionFaqFilterableFields);
-    const paginationOptions = (0, pick_1.default)(req.query, pagination_1.paginationFields);
-    const result = yield sectionFaq_service_1.SectionFaqService.getAllFaq(filters, paginationOptions);
+    const result = yield sectionFaq_service_1.SectionFaqService.getAllFaq();
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
         message: "Section faq retrieved successfully",
-        meta: result.meta,
-        data: result.data,
+        data: result,
+    });
+}));
+const deleteFaq = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield sectionFaq_service_1.SectionFaqService.deleteFaq(id);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Faq deleted successfully",
+        data: result,
+    });
+}));
+const faqById = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield sectionFaq_service_1.SectionFaqService.faqByid(id);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Faq retrived successfully",
+        data: result,
+    });
+}));
+const updateById = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const faqData = __rest(req.body, []);
+    const result = yield sectionFaq_service_1.SectionFaqService.updateByid(id, faqData);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Faq update successfully",
+        data: result,
     });
 }));
 exports.SectionFaqController = {
     createSectionFaq,
     getAllFaq,
+    deleteFaq,
+    faqById,
+    updateById,
 };

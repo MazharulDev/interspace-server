@@ -35,9 +35,9 @@ const getAllBooking = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getBookingByEmail = catchAsync(async (req: Request, res: Response) => {
-  const { email } = req.params;
+  const { email, packageName } = req.query;
 
-  const result = await BookingService.getBookingByEmail(email);
+  const result = await BookingService.getBookingByEmail(email, packageName);
 
   sendResponse<IBooking[]>(res, {
     statusCode: httpStatus.OK,

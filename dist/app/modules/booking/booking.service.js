@@ -94,10 +94,15 @@ const updateBookingStatus = (id, payload) => __awaiter(void 0, void 0, void 0, f
     });
     return result;
 });
+const bookingByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield booking_model_1.Booking.findOne({ email: email });
+    return result;
+});
 exports.BookingService = {
     createService,
     getAllBooking,
     deleteBooking,
     updateBookingStatus,
     getBookingByEmail,
+    bookingByEmail,
 };
