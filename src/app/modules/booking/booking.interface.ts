@@ -6,6 +6,7 @@ export type IBooking = {
   address: string;
   packageName: string;
   paymentData?: any;
+  packagePrice: string;
 };
 
 export type IBookingFilters = {

@@ -34,6 +34,10 @@ export const BookingSchema = new Schema<IBooking>(
         ref: "Payment",
       },
     ],
+    packagePrice: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

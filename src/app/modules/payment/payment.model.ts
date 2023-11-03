@@ -12,11 +12,23 @@ export const PaymentSchema = new Schema<IPayment>(
       type: String,
       required: true,
     },
+    packageName: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       required: true,
       default: "pending",
       enum: status,
+    },
+    month: {
+      type: String,
+      required: true,
+    },
+    year: {
+      type: String,
+      required: true,
     },
     transactionId: {
       type: String,

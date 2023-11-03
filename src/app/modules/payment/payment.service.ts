@@ -1,10 +1,13 @@
+import mongoose from "mongoose";
 import { sslService } from "../ssl/ssl.service";
 import { Payment } from "./payment.model";
+import { Booking } from "../booking/booking.model";
 
 const initPayment = async (data: any) => {
+  const transactionId = new mongoose.Types.ObjectId().toString();
   const paymentSession = await sslService.initPayment({
     total_amount: data.amount,
-    tran_id: data.transactionId,
+    tran_id: transactionId,
     cus_name: data.userName,
     cus_email: data.userEmail,
     cus_add1: data.address,
@@ -13,10 +16,26 @@ const initPayment = async (data: any) => {
   const paymentData = {
     amount: data.amount,
     email: data.userEmail,
-    transactionId: data.transactionId,
+    packageName: data.packageName,
+    month: data.month,
+    year: data.year,
+    transactionId: transactionId,
   };
   await Payment.create(paymentData);
   return paymentSession.redirectGatewayURL;
+};
+
+const paymentSuccess = async (transId: any) => {
+  const result = await Payment.updateOne(
+    { transactionId: transId },
+    { $set: { status: "success" } }
+  );
+  return result;
+};
+
+const paymentByTransactionId = async (id: string) => {
+  const result = await Payment.findOne({ transactionId: id });
+  return result;
 };
 
 const webHook = async (payload: any) => {
@@ -34,17 +53,18 @@ const webHook = async (payload: any) => {
   }
 
   const { tran_id } = result;
-  console.log(tran_id);
   await Payment.updateOne(
     { transactionId: tran_id },
     { $set: { status: "success" } }
   );
   return {
-    message:"Payment success"
-  }
+    message: "Payment success",
+  };
 };
 
 export const PaymentService = {
   initPayment,
   webHook,
+  paymentSuccess,
+  paymentByTransactionId,
 };

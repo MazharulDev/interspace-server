@@ -4,5 +4,7 @@ const router = express.Router();
 
 router.post("/init", PaymentController.initPayment);
 router.post("/webhook", PaymentController.webHook);
+router.post("/success", PaymentController.paymentSuccess);
+router.get("/:id", PaymentController.paymentByTransactionId);
 
 export const PaymentRoutes = router;

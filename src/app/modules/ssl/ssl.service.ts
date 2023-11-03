@@ -11,7 +11,7 @@ const initPayment = async (payload: any) => {
       total_amount: payload.total_amount,
       currency: "BDT",
       tran_id: payload.tran_id,
-      success_url: "https://www.facebook.com",
+      success_url: `${config.server_url}/payment/success?transactionId=${payload.tran_id}`,
       fail_url: "http://localhost:3030/fail",
       cancel_url: "http://localhost:3030/cancel",
       ipn_url: "http://localhost:3030/ipn",
