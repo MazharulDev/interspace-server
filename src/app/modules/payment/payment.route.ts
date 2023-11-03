@@ -5,6 +5,8 @@ const router = express.Router();
 router.post("/init", PaymentController.initPayment);
 router.post("/webhook", PaymentController.webHook);
 router.post("/success", PaymentController.paymentSuccess);
+router.post("/", PaymentController.paymentDelete);
+router.get("/payments/:email", PaymentController.userAllPayment);
 router.get("/:id", PaymentController.paymentByTransactionId);
 
 export const PaymentRoutes = router;

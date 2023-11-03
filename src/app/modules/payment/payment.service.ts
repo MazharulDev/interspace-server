@@ -38,6 +38,11 @@ const paymentByTransactionId = async (id: string) => {
   return result;
 };
 
+const paymentDelete = async (id: any) => {
+  const result = await Payment.deleteOne({ transactionId: id });
+  return result;
+};
+
 const webHook = async (payload: any) => {
   if (!payload || !payload?.status || payload?.status !== "VALID") {
     return {
@@ -62,9 +67,16 @@ const webHook = async (payload: any) => {
   };
 };
 
+const userAllPayment = async (email: string) => {
+  const result = await Payment.find({ email: email, status: "success" });
+  return result;
+};
+
 export const PaymentService = {
   initPayment,
   webHook,
   paymentSuccess,
   paymentByTransactionId,
+  paymentDelete,
+  userAllPayment,
 };

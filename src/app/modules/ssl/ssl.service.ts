@@ -12,7 +12,7 @@ const initPayment = async (payload: any) => {
       currency: "BDT",
       tran_id: payload.tran_id,
       success_url: `${config.server_url}/payment/success?transactionId=${payload.tran_id}`,
-      fail_url: "http://localhost:3030/fail",
+      fail_url: `${config.server_url}/payment?transactionId=${payload.tran_id}`,
       cancel_url: "http://localhost:3030/cancel",
       ipn_url: "http://localhost:3030/ipn",
       shipping_method: "N/A",

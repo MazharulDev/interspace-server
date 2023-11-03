@@ -46,10 +46,31 @@ const paymentByTransactionId = async (
     data: result,
   });
 };
+const paymentDelete = async (req: Request, res: Response) => {
+  const { transactionId } = req.query;
+  const result = await PaymentService.paymentDelete(transactionId);
+  if (result.deletedCount) {
+    res.redirect(
+      `${config.client_url}/user/booking/pay/fail?transactionId=${transactionId}`
+    );
+  }
+};
+const userAllPayment = async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const result = await PaymentService.userAllPayment(email);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "user payments retrived successfully",
+    data: result,
+  });
+};
 
 export const PaymentController = {
   initPayment,
   webHook,
   paymentSuccess,
   paymentByTransactionId,
+  paymentDelete,
+  userAllPayment,
 };
