@@ -1,9 +1,14 @@
-import mongoose from "mongoose";
+import mongoose, { SortOrder } from "mongoose";
 import { sslService } from "../ssl/ssl.service";
 import { Payment } from "./payment.model";
 import { Booking } from "../booking/booking.model";
 import ApiError from "../../../errors/ApiError";
 import httpStatus from "http-status";
+import { IPayment, IPaymentFilters } from "./payment.interface";
+import { IPaginationOptions } from "../../../interfaces/pagination";
+import { IGenericResponse } from "../../../interfaces/common";
+import { paginationHelpers } from "../../../helpers/paginationHelpers";
+import { paymentSearchableFields } from "./payment.constant";
 
 const initPayment = async (data: any) => {
   const transactionId = new mongoose.Types.ObjectId().toString();
@@ -89,6 +94,60 @@ const userAllPayment = async (email: string) => {
   return result;
 };
 
+const paymentFilter = async (
+  filters: IPaymentFilters,
+  paginationOptions: IPaginationOptions
+): Promise<IGenericResponse<IPayment[]>> => {
+  const { searchTerm, ...filtersData } = filters;
+  const { page, limit, skip, sortBy, sortOrder } =
+    paginationHelpers.calculatePagination(paginationOptions);
+
+  const andConditions = [];
+
+  if (searchTerm) {
+    andConditions.push({
+      $or: paymentSearchableFields.map((field) => ({
+        [field]: {
+          $regex: searchTerm,
+          $options: "i",
+        },
+      })),
+    });
+  }
+
+  if (Object.keys(filtersData).length) {
+    andConditions.push({
+      $and: Object.entries(filtersData).map(([field, value]) => ({
+        [field]: value,
+      })),
+    });
+  }
+
+  const sortConditions: { [key: string]: SortOrder } = {};
+
+  if (sortBy && sortOrder) {
+    sortConditions[sortBy] = sortOrder;
+  }
+  const whereConditions =
+    andConditions.length > 0 ? { $and: andConditions } : {};
+
+  const result = await Payment.find(whereConditions)
+    .sort(sortConditions)
+    .skip(skip)
+    .limit(limit);
+
+  const total = await Payment.countDocuments(whereConditions);
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  };
+};
+
 export const PaymentService = {
   initPayment,
   webHook,
@@ -96,4 +155,5 @@ export const PaymentService = {
   paymentByTransactionId,
   paymentDelete,
   userAllPayment,
+  paymentFilter,
 };

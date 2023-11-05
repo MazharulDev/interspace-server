@@ -6,6 +6,7 @@ router.post("/init", PaymentController.initPayment);
 router.post("/webhook", PaymentController.webHook);
 router.post("/success", PaymentController.paymentSuccess);
 router.post("/", PaymentController.paymentDelete);
+router.get("/all", PaymentController.paymentFilter);
 router.get("/payments/:email", PaymentController.userAllPayment);
 router.get("/:id", PaymentController.paymentByTransactionId);
 

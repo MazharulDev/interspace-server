@@ -3,6 +3,11 @@ import { PaymentService } from "./payment.service";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import config from "../../../config";
+import pick from "../../../shared/pick";
+import catchAsync from "../../../shared/catchAsync";
+import { paymentFilterableFields } from "./payment.constant";
+import { paginationFields } from "../../../constants/pagination";
+import { IPayment } from "./payment.interface";
 
 const initPayment = async (req: Request, res: Response, next: NextFunction) => {
   const result = await PaymentService.initPayment(req.body);
@@ -66,6 +71,21 @@ const userAllPayment = async (req: Request, res: Response) => {
   });
 };
 
+const paymentFilter = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, paymentFilterableFields);
+  const paginationOptions = pick(req.query, paginationFields);
+
+  const result = await PaymentService.paymentFilter(filters, paginationOptions);
+
+  sendResponse<IPayment[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Payments retrieved successfully",
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
 export const PaymentController = {
   initPayment,
   webHook,
@@ -73,4 +93,5 @@ export const PaymentController = {
   paymentByTransactionId,
   paymentDelete,
   userAllPayment,
+  paymentFilter,
 };
