@@ -9,7 +9,6 @@ export const paymentSearchableFields = [
   "month",
   "year",
   "transactionId",
-  "amount",
 ];
 export const paymentFilterableFields = [
   "searchTerm",
@@ -19,5 +18,4 @@ export const paymentFilterableFields = [
   "month",
   "year",
   "transactionId",
-  "amount",
 ];
