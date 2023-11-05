@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { sslService } from "../ssl/ssl.service";
 import { Payment } from "./payment.model";
 import { Booking } from "../booking/booking.model";
+import ApiError from "../../../errors/ApiError";
+import httpStatus from "http-status";
 
 const initPayment = async (data: any) => {
   const transactionId = new mongoose.Types.ObjectId().toString();
@@ -21,8 +23,23 @@ const initPayment = async (data: any) => {
     year: data.year,
     transactionId: transactionId,
   };
-  await Payment.create(paymentData);
-  return paymentSession.redirectGatewayURL;
+  const paymentExist = await Payment.findOne({
+    email: data.userEmail,
+    month: data.month,
+    year: data.year,
+    status: "success",
+  });
+  if (!paymentExist) {
+    await Payment.create(paymentData);
+    return {
+      link: paymentSession.redirectGatewayURL,
+    };
+  } else {
+    // throw new ApiError(httpStatus.BAD_REQUEST, "Already payment");
+    return null;
+  }
+  // return paymentSession;
+  // // .redirectGatewayURL
 };
 
 const paymentSuccess = async (transId: any) => {
