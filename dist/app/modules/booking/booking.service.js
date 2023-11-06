@@ -30,10 +30,10 @@ const booking_model_1 = require("./booking.model");
 const paginationHelpers_1 = require("../../../helpers/paginationHelpers");
 const booking_constant_1 = require("./booking.constant");
 const createService = (bookInfo) => __awaiter(void 0, void 0, void 0, function* () {
-    const packageFind = yield booking_model_1.Booking.find({
-        packageName: bookInfo.packageName,
+    const exist = yield booking_model_1.Booking.findOne({
+        email: bookInfo.email,
     });
-    const exist = packageFind.some((pack) => pack.email === bookInfo.email);
+    // const exist = bookingEmail.some((pack) => pack.email === bookInfo.email);
     if (exist) {
         throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, "You already booked this connection");
     }
@@ -80,8 +80,8 @@ const getAllBooking = (filters, paginationOptions) => __awaiter(void 0, void 0, 
         data: result,
     };
 });
-const getBookingByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield booking_model_1.Booking.find({ email: email });
+const getBookingByEmail = (email, packageName) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield booking_model_1.Booking.find({ email: email, packageName: packageName });
     return result;
 });
 const deleteBooking = (id) => __awaiter(void 0, void 0, void 0, function* () {
