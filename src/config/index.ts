@@ -20,5 +20,6 @@ export default {
     store_pass: process.env.SSL_STORE_PASS,
     sslPaymentUrl: process.env.BASE_PAYMENT_URL,
     sslValidationUrl: process.env.BASE_VALIDATION_URL,
+    transCharacters: process.env.TRANS_CHARACTERS,
   },
 };

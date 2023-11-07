@@ -9,12 +9,14 @@ import { IPaginationOptions } from "../../../interfaces/pagination";
 import { IGenericResponse } from "../../../interfaces/common";
 import { paginationHelpers } from "../../../helpers/paginationHelpers";
 import { paymentSearchableFields } from "./payment.constant";
+import { generateTransactionId } from "../../../utils/transIdGenarate";
 
 const initPayment = async (data: any) => {
-  const transactionId = new mongoose.Types.ObjectId().toString();
+  // const transactionId = new mongoose.Types.ObjectId().toString();
+  const transId = await generateTransactionId(10);
   const paymentSession = await sslService.initPayment({
     total_amount: data.amount,
-    tran_id: transactionId,
+    tran_id: transId,
     cus_name: data.userName,
     cus_email: data.userEmail,
     cus_add1: data.address,
@@ -26,7 +28,7 @@ const initPayment = async (data: any) => {
     packageName: data.packageName,
     month: data.month,
     year: data.year,
-    transactionId: transactionId,
+    transactionId: transId,
   };
   const paymentExist = await Payment.findOne({
     email: data.userEmail,
